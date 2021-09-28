@@ -13,20 +13,36 @@ static TBitField FAKE_BITFIELD(1);
 
 TBitField::TBitField(int len)
 {
-    BitLen = len;
-    MemLen = BitLen / 32 + 1;
-    pMem = new TELEM[MemLen];
-    for (int i = 0; i < MemLen; i++) {
-        pMem[i] = 0;
+    try {
+        BitLen = len;
+        MemLen = BitLen / 32 + 1;
+        pMem = new TELEM[MemLen];
+        for (int i = 0; i < MemLen; i++) {
+            pMem[i] = 0;
+        }
+    }
+    catch (int len){
+        if (len <= 0) {
+            cout << "Amount of bits isn`t possible";
+        }
     }
 }
 
-TBitField::TBitField(const TBitField &bf) // конструктор копирования
+TBitField::TBitField(const TBitField& bf) // конструктор копирования
 {
+    try {
+        bf;
+    }
+    catch (TBitField bf) {
+        if (bf.BitLen <= 0) {
+            cout << "Amount of bits isn`t possible";
+        }
+    }
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
     for (int i = 0; i < MemLen; i++) {
-        pMem[i] = bf.pMem[i];
+    pMem[i] = bf.pMem[i];
     }
 }
 
@@ -49,7 +65,7 @@ TELEM TBitField::GetMemMask(const int n) const // битовая маска дл
 
 int TBitField::GetLength(void) const // получить длину (к-во битов)
 {
-  return FAKE_INT;
+  return BitLen;
 }
 
 void TBitField::SetBit(const int n) // установить бит
