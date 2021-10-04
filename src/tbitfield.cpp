@@ -21,9 +21,9 @@ TBitField::TBitField(int len)
             pMem[i] = 0;
         }
     }
-    catch (int len){
+    catch (int len) {
         if (len <= 0) {
-            cout << "Amount of bits isn`t possible";
+            throw "ERROR";
         }
     }
 }
@@ -70,20 +70,22 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
-    int index = GetMemIndex(n);
-    TELEM mask = GetMemMask(n);
-    pMem[index] |= mask;
+    if ((n < 0) || (n >= BitLen))
+        throw "Error";
+    pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
-    int index = GetMemIndex(n);
-    TELEM mask = ~GetMemMask(n);
-    pMem[index] &= mask;
+    if ((n < 0) || (n >= BitLen))
+        throw "Error";
+    pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
+    if ((n < 0) || (n >= BitLen))
+        throw "Error";
     return GetMemMask(n) & pMem[GetMemIndex(n)];
 }
 
